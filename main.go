@@ -23,22 +23,31 @@ func main(){
     }
      
     as := make(chan *html.Node)
-    element := "div"
+    element := "a"
+
     go findElement(root, as, element)
     for v := range as{
-
-        fmt.Println(v)
-        // fmt.Println("\n==========================================================\n",getText(v))
+  
+     fmt.Println(  link{
+        Href: getAttribute(v, "href"),
+        Text: getText(v),
+     })
+     
+        
     }
+
+ 
   
 }
 func findElement(n *html.Node, as chan *html.Node, e string){
+ 
     if n.Type == html.ElementNode && n.Data == e{
+        
         as <- n
        return
     }
     for c := n.FirstChild; c != nil; c = c.NextSibling{
-      fmt.Println(c)
+      
        findElement(c, as, e)
     }
     if n.Parent == nil{
